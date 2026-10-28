@@ -1,0 +1,47 @@
+[build-system]
+requires = ["setuptools>=77"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "ops-assistant"
+version = "0.1.0"
+description = "Cited question answering over a versioned operations handbook, with a retrieval experiment and a frozen evaluation set."
+readme = "README.md"
+license = "MIT"
+authors = [{ name = "Munesh Kumar" }]
+requires-python = ">=3.13"
+dependencies = [
+    "fastapi>=0.162,<0.163",
+    "uvicorn>=0.54,<0.55",
+    "pydantic>=2.14,<3",
+    "numpy>=2.5,<3",
+    "openai>=3.40,<4",
+    "snowballstemmer>=3.1,<4",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=9.2,<10",
+    "ruff>=0.17,<0.18",
+    "httpx>=0.28,<0.29",
+]
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+ops_assistant = ["static/*.html"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py313"
+src = ["src", "tests"]
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I", "B", "UP", "SIM", "N", "RUF"]
+# Exception names describe the condition (ProviderTimeout, InvalidQuestion); an Error suffix adds nothing.
+ignore = ["N818"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-q"

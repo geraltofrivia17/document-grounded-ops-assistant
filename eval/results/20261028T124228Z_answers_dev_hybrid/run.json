@@ -1,0 +1,38 @@
+{
+  "kind": "answers",
+  "created_utc": "20261028T124228Z",
+  "case_set": "dev",
+  "cases_file": "eval/dev_cases.jsonl",
+  "cases_file_sha256": "d9977335f6648d76e5489e2ce126744a8399136fae2de1bebc8f42a78afe64c9",
+  "frozen_check_passed": false,
+  "cases_planned": 24,
+  "cases_run": 24,
+  "retrieval_mode": "hybrid",
+  "top_k": 5,
+  "chunking": {
+    "strategy": "section",
+    "max_words": 160,
+    "overlap_words": 40
+  },
+  "provider": "openai",
+  "model_configured": "gpt-6-luna",
+  "models_reported": [
+    "gpt-6-luna"
+  ],
+  "reasoning_effort": "not sent",
+  "embedding_model": "text-embedding-3-small",
+  "corpus_as_of": "2026-10-01",
+  "corpus_fingerprint": "1b62a68bc1b2a3df",
+  "pricing_checked": "2026-10-28",
+  "git": {
+    "commit": "unknown",
+    "uncommitted_changes": true
+  },
+  "versions": {
+    "python": "3.13.16",
+    "ops-assistant": "0.1.0",
+    "openai": "3.40.0",
+    "numpy": "2.5.4"
+  },
+  "platform": "Windows-11-10.0.26220-SP0"
+}

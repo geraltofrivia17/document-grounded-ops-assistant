@@ -1,0 +1,74 @@
+# All tunable settings live here. Environment variables override a few of them
+# (see config.py); the API key is only ever read from OPENAI_API_KEY.
+
+[corpus]
+handbook_dir = "data/handbook"
+# Fixed so that the evaluation is reproducible: the effective-document rule
+# picks versions in force on this date, not on the day someone runs the code.
+as_of = 2026-10-01
+
+[chunking]
+# section: chunks never cross a numbered section. window: fixed windows across sections.
+strategy = "section"
+max_words = 160
+overlap_words = 40
+
+[retrieval]
+# keyword | embedding | hybrid. Embedding was chosen on the development set on
+# 28 October 2026 (see docs/decisions.md).
+mode = "embedding"
+top_k = 5
+# Candidates taken from each retriever before reciprocal rank fusion.
+hybrid_candidates = 20
+rrf_k = 60
+keyword_stemming = true
+
+[embedding]
+model = "text-embedding-3-small"
+cache_dir = "data/index"
+batch_size = 64
+# On 28 October 2026, 18 of 20 question embeddings took 146-228 ms and two took about
+# 30.7 s: a 30-second timeout followed by a successful retry. A shorter timeout means a
+# stuck call is retried after seconds, not half a minute (see docs/decisions.md).
+timeout_seconds = 5
+
+[generation]
+# openai | mock
+provider = "openai"
+model = "gpt-6-luna"
+max_output_tokens = 800
+timeout_seconds = 30
+# Retries are handled by the OpenAI SDK (connection errors, 408, 409, 429, 5xx).
+max_retries = 1
+# Empty means the parameter is not sent.
+reasoning_effort = ""
+
+[api]
+max_question_chars = 500
+min_question_chars = 3
+
+# US dollars per million tokens, standard tier. Checked on 28 October 2026 at
+# https://developers.openai.com/api/docs/pricing. The embedding price is derived
+# from the embeddings guide figure of 62,500 pages per dollar at 800 tokens per page.
+[pricing]
+checked = 2026-10-28
+
+[pricing.models.gpt-6-luna]
+input = 0.10
+cached_input = 0.01
+output = 0.50
+
+[pricing.models."gpt-6.1-terra"]
+input = 1.00
+cached_input = 0.05
+output = 5.00
+
+[pricing.models."gpt-6.1-sol"]
+input = 2.00
+cached_input = 0.10
+output = 10.00
+
+[pricing.models.text-embedding-3-small]
+input = 0.02
+cached_input = 0.02
+output = 0.0

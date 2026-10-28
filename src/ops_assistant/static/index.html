@@ -1,0 +1,137 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Operations Assistant</title>
+<style>
+  :root {
+    --bg: #f6f7f9; --panel: #ffffff; --text: #1d2330; --muted: #5d6677; --line: #d9dde5;
+    --accent: #1f5fbf; --ok: #1d7a46; --warn: #9a6100; --bad: #b3261e; --code: #eef1f6;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #14171d; --panel: #1c2028; --text: #e6e9ef; --muted: #9aa3b2; --line: #2e3440;
+      --accent: #7aa7ff; --ok: #5cc98b; --warn: #e3b45a; --bad: #ff8a80; --code: #252b35;
+    }
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--text);
+         font: 16px/1.5 system-ui, -apple-system, "Segoe UI", sans-serif; }
+  main { max-width: 860px; margin: 0 auto; padding: 24px 16px 48px; }
+  h1 { font-size: 1.4rem; margin: 0 0 4px; }
+  .sub { color: var(--muted); margin: 0 0 20px; font-size: .95rem; }
+  .panel { background: var(--panel); border: 1px solid var(--line); border-radius: 10px; padding: 16px; margin-bottom: 16px; }
+  label { font-weight: 600; display: block; margin-bottom: 6px; }
+  textarea { width: 100%; min-height: 84px; padding: 10px; font: inherit; color: inherit;
+             background: var(--bg); border: 1px solid var(--line); border-radius: 8px; resize: vertical; }
+  .row { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; margin-top: 10px; }
+  button { font: inherit; border-radius: 8px; border: 1px solid var(--line); padding: 7px 12px;
+           background: var(--panel); color: var(--text); cursor: pointer; }
+  button.primary { background: var(--accent); border-color: var(--accent); color: #fff; font-weight: 600; }
+  button:disabled { opacity: .6; cursor: wait; }
+  .examples button { font-size: .85rem; }
+  .badge { display: inline-block; font-size: .8rem; font-weight: 700; padding: 2px 8px; border-radius: 999px; border: 1px solid currentColor; }
+  .answered { color: var(--ok); } .insufficient_evidence { color: var(--warn); }
+  .conflicting_evidence { color: var(--warn); } .error { color: var(--bad); }
+  .answer { font-size: 1.05rem; margin: 10px 0; white-space: pre-wrap; }
+  .note { border-left: 3px solid var(--warn); padding-left: 10px; color: var(--text); }
+  .cite { border-top: 1px solid var(--line); padding-top: 10px; margin-top: 10px; }
+  .cite code, .meta code { background: var(--code); padding: 1px 5px; border-radius: 4px; font-size: .85rem; }
+  .cite pre { white-space: pre-wrap; background: var(--code); padding: 10px; border-radius: 8px; font-size: .9rem; margin: 8px 0 0; }
+  .meta { color: var(--muted); font-size: .85rem; display: grid; gap: 4px; }
+  .ext { color: var(--warn); font-weight: 600; font-size: .8rem; }
+  #health { font-size: .85rem; color: var(--muted); }
+  [hidden] { display: none !important; }
+</style>
+</head>
+<body>
+<main>
+  <h1>Operations Assistant</h1>
+  <p class="sub">Answers from the Fernhollow Distribution handbook (a fictional company), with citations to the passages used. <span id="health">Checking service…</span></p>
+
+  <section class="panel">
+    <label for="question">Question</label>
+    <textarea id="question" maxlength="500" placeholder="e.g. What mileage rate can I claim for my own car?"></textarea>
+    <div class="row">
+      <button id="ask" class="primary" type="button">Ask</button>
+      <span class="examples row" style="margin:0">
+        <button type="button" data-q="What mileage rate can I claim for using my own car on business?">Supported</button>
+        <button type="button" data-q="What is the company pension contribution?">Not in the handbook</button>
+        <button type="button" data-q="How long do I have to return my laptop after I leave?">Conflicting documents</button>
+      </span>
+    </div>
+  </section>
+
+  <section id="result" class="panel" hidden aria-live="polite">
+    <div><span id="outcome" class="badge"></span></div>
+    <p id="answer" class="answer"></p>
+    <p id="conflict" class="note" hidden></p>
+    <div id="citations"></div>
+    <div id="warnings" class="meta" hidden></div>
+    <div id="meta" class="meta" style="margin-top:12px"></div>
+  </section>
+</main>
+<script>
+const $ = (id) => document.getElementById(id);
+const label = { answered: "Answered", insufficient_evidence: "Not enough evidence", conflicting_evidence: "Documents disagree" };
+
+function text(tag, value, cls) { const el = document.createElement(tag); el.textContent = value; if (cls) el.className = cls; return el; }
+
+async function checkHealth() {
+  try {
+    const r = await fetch("/health"); const h = await r.json();
+    $("health").textContent = r.ok
+      ? `Service ok · ${h.documents} documents in force on ${h.as_of} · ${h.retrieval_mode} retrieval · ${h.provider} (${h.model})`
+      : `Service unavailable: ${h.reason}`;
+  } catch { $("health").textContent = "Service not reachable"; }
+}
+
+function showError(err, requestId) {
+  $("outcome").textContent = `Error: ${err.category}`; $("outcome").className = "badge error";
+  $("answer").textContent = err.message;
+  $("meta").replaceChildren(text("div", `Stage: ${err.stage} · Request ID: ${requestId || err.request_id}`));
+}
+
+function showAnswer(d) {
+  $("outcome").textContent = label[d.outcome] || d.outcome; $("outcome").className = `badge ${d.outcome}`;
+  $("answer").textContent = d.answer;
+  $("conflict").hidden = !d.conflict_note; $("conflict").textContent = d.conflict_note;
+  const cites = d.citations.map((c) => {
+    const box = document.createElement("div"); box.className = "cite";
+    const head = document.createElement("div");
+    head.append(text("code", c.id), text("span", ` ${c.document} ${c.title} (v${c.version}) · ${c.section} `));
+    if (c.origin === "external") head.append(text("span", "external document", "ext"));
+    box.append(head, text("pre", c.text)); return box;
+  });
+  $("citations").replaceChildren(...cites);
+  $("warnings").hidden = !d.warnings.length;
+  $("warnings").replaceChildren(...d.warnings.map((w) => text("div", `Warning: ${w}`)));
+  const cost = d.usage.estimated_cost_usd == null ? "unknown" : `$${d.usage.estimated_cost_usd.toFixed(6)}`;
+  $("meta").replaceChildren(
+    text("div", `Request ID: ${d.request_id} · ${d.retrieval_mode} retrieval · model ${d.model}${d.generation_skipped ? " (not called)" : ""}`),
+    text("div", `Retrieval ${d.timings.retrieval_ms} ms · generation ${d.timings.generation_ms} ms · total ${d.timings.total_ms} ms`),
+    text("div", `Tokens in ${d.usage.input_tokens}, out ${d.usage.output_tokens}, embedding ${d.usage.embedding_tokens} · estimated cost ${cost}`),
+  );
+}
+
+async function ask() {
+  const question = $("question").value.trim();
+  $("ask").disabled = true; $("result").hidden = false;
+  $("outcome").textContent = "Working…"; $("outcome").className = "badge";
+  $("answer").textContent = ""; $("conflict").hidden = true; $("citations").replaceChildren(); $("warnings").hidden = true; $("meta").replaceChildren();
+  try {
+    const r = await fetch("/ask", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ question }) });
+    const d = await r.json();
+    if (r.ok) showAnswer(d); else showError(d.error, r.headers.get("X-Request-ID"));
+  } catch (e) { showError({ category: "network_error", message: String(e), stage: "browser" }); }
+  finally { $("ask").disabled = false; }
+}
+
+$("ask").addEventListener("click", ask);
+$("question").addEventListener("keydown", (e) => { if (e.key === "Enter" && (e.ctrlKey || e.metaKey)) ask(); });
+document.querySelectorAll("[data-q]").forEach((b) => b.addEventListener("click", () => { $("question").value = b.dataset.q; ask(); }));
+checkHealth();
+</script>
+</body>
+</html>

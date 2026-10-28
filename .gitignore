@@ -1,0 +1,11 @@
+.venv/
+venv/
+__pycache__/
+*.egg-info/
+build/
+dist/
+.pytest_cache/
+.ruff_cache/
+.env
+# Embedding cache: rebuilt by `python -m ops_assistant index`.
+data/index/
