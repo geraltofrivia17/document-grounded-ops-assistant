@@ -112,3 +112,8 @@ Question embeddings cost a median 178.5 ms per question (95th percentile 373.2 m
 - The retrieval experiment is run once on the frozen set with the same five chunkings.
 - Nothing is changed after seeing frozen results. Any change prompted by them is logged here and evaluated on new development cases, never by re-running the frozen set and reporting the better result.
 - The embedding run's answers are reviewed by hand before publishing.
+
+## 2026-10-28: Review sheet as a formatted Excel workbook
+
+**Problem:** the first review sheet was a CSV file. Opened in Excel, it showed narrow columns, with each row's cited passages stacked in one tall cell. It was impractical to review 60 answers that way.
+**Decision:** each answer run now writes `review.xlsx`, with wide wrapped columns, rows sized to their text, the header and case column frozen, drop-down lists for the marks, and an instructions tab. The columns the reviewer reads and fills in come first. Reading the marks writes `review_marks.csv`, so the judgements remain readable as plain text. This adds `openpyxl` to the development dependencies only; the service and its Docker image don't need it.

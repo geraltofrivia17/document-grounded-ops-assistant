@@ -15,7 +15,7 @@ from pathlib import Path
 import numpy as np
 
 from ops_assistant.evaluation.cases import CATEGORIES, EvalCase, cases_path, file_hash, load_cases
-from ops_assistant.evaluation.review import load_review, write_review_sheet
+from ops_assistant.evaluation.review import load_review, write_marks_csv, write_review_workbook
 from ops_assistant.evaluation.scoring import (
     AnswerScore,
     RetrievalScore,
@@ -323,13 +323,24 @@ def answer_summary(
     return "\n\n".join(parts) + "\n"
 
 
+def write_review_sheet(
+    run_dir: Path, eval_dir: Path | None = None, overwrite: bool = False
+) -> Path:
+    """Create review.xlsx for an answer run. An existing sheet is kept unless overwrite is set."""
+    sheet = run_dir / "review.xlsx"
+    if overwrite or not sheet.exists():
+        _, cases = load_run(run_dir, eval_dir)
+        write_review_workbook(sheet, score_records(load_records(run_dir), cases))
+    return sheet
+
+
 def write_answer_report(
     run_dir: Path, review_path: Path | None = None, eval_dir: Path | None = None
 ) -> Path:
-    _, cases = load_run(run_dir, eval_dir)
-    sheet = run_dir / "review.csv"
-    if not sheet.exists():
-        write_review_sheet(sheet, score_records(load_records(run_dir), cases))
+    write_review_sheet(run_dir, eval_dir, overwrite=False)
+    if review_path is not None:
+        # A plain-text copy of the marks, readable and diffable without Excel.
+        write_marks_csv(review_path.parent / "review_marks.csv", load_review(review_path))
     summary = run_dir / "summary.md"
     summary.write_text(answer_summary(run_dir, review_path, eval_dir), encoding="utf-8")
     return summary

@@ -74,19 +74,21 @@ The outcome table lists expected against actual outcomes, so false abstentions (
 
 ## Human review
 
-Automatic scoring matches text. It cannot tell whether a cited passage actually supports a sentence, or whether an answer containing the right number is otherwise wrong. Every answer run therefore writes `review.csv`, with the question, the reference answer, the model's answer and the full text of each cited passage. The reviewer fills in:
+Automatic scoring matches text. It cannot tell whether a cited passage actually supports a sentence, or whether an answer containing the right number is otherwise wrong. Every answer run therefore writes `review.xlsx`, with the question, the reference answer, the scoring guidance, the model's answer and the full text of each cited passage, laid out for reading with drop-down lists for the marks. (`python -m ops_assistant eval review-sheet <run>` recreates it.) The reviewer fills in:
 
 | Column | Values |
 |---|---|
-| `human_correct` | `yes`, `partly` or `no`, compared with the reference answer and the scoring guidance |
-| `human_supported` | `yes`, `partly` or `no`: is each claim backed by the cited text? `na` when nothing is cited |
-| `human_notes` | Free text, especially for every `partly` and `no` |
+| Correct? | `yes`, `partly` or `no`, compared with the reference answer and the scoring guidance |
+| Supported? | `yes`, `partly` or `no`: is each claim backed by the cited text? `na` when nothing is cited |
+| Notes | Free text, for every `partly` and `no` |
 
 Then rebuild the report with the review included:
 
 ```powershell
-python -m ops_assistant eval report eval/results/<run> --review eval/results/<run>/review.csv
+python -m ops_assistant eval report eval/results/<run> --review eval/results/<run>/review.xlsx
 ```
+
+This also writes `review_marks.csv` beside the workbook, so the judgements can be read and compared in plain text.
 
 The report shows reviewed correctness and support by category, and how often the automatic check agrees with the reviewer.
 

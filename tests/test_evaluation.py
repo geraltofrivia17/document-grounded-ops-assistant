@@ -1,10 +1,10 @@
-import csv
 import json
 import shutil
 from collections import Counter
 from pathlib import Path
 
 import pytest
+from openpyxl import load_workbook
 
 from ops_assistant.chunking import Chunk
 from ops_assistant.config import Settings
@@ -172,18 +172,37 @@ def test_answer_run_writes_records_report_and_review(settings: Settings, tmp_pat
     summary = write_answer_report(run_dir, eval_dir=EVAL_DIR).read_text(encoding="utf-8")
     assert "## Results by category" in summary and "| supported | 4 |" in summary
 
-    sheet = run_dir / "review.csv"
-    with sheet.open(encoding="utf-8-sig", newline="") as handle:
-        rows = list(csv.DictReader(handle))
-    for row in rows:
-        row["human_correct"], row["human_supported"] = "yes", "yes"
-    with sheet.open("w", encoding="utf-8-sig", newline="") as handle:
-        writer = csv.DictWriter(handle, fieldnames=list(rows[0]))
-        writer.writeheader()
-        writer.writerows(rows)
-    assert set(load_review(sheet)) == {r["id"] for r in records}
+    sheet = run_dir / "review.xlsx"
+    book = load_workbook(sheet)
+    review = book["Review"]
+    headers = [cell.value for cell in review[1]]
+    assert review.freeze_panes == "B2"
+    assert len(review.data_validations.dataValidation) == 2
+    correct, supported = headers.index("Correct?") + 1, headers.index("Supported?") + 1
+    for row in range(2, review.max_row + 1):
+        review.cell(row, correct).value = "Yes "
+        review.cell(row, supported).value = "partly"
+    book.save(sheet)
+
+    marks = load_review(sheet)
+    assert set(marks) == {r["id"] for r in records}
+    assert {m.correct for m in marks.values()} == {"yes"}
     reviewed = write_answer_report(run_dir, sheet, eval_dir=EVAL_DIR).read_text(encoding="utf-8")
     assert "## Human review" in reviewed
+    assert load_review(run_dir / "review_marks.csv") == marks
+
+
+def test_review_rejects_unknown_marks(settings: Settings, tmp_path: Path) -> None:
+    options = AnswerRunOptions("dev", "keyword", limit=1)
+    run_dir = run_answers(settings, options, MockGenerator(script=cite_top), results_dir=tmp_path)
+    write_answer_report(run_dir, eval_dir=EVAL_DIR)
+    sheet = run_dir / "review.xlsx"
+    book = load_workbook(sheet)
+    headers = [cell.value for cell in book["Review"][1]]
+    book["Review"].cell(2, headers.index("Correct?") + 1).value = "maybe"
+    book.save(sheet)
+    with pytest.raises(ValueError, match="Correct\\? must be one of"):
+        load_review(sheet)
 
 
 def test_fatal_provider_error_stops_the_run(settings: Settings, tmp_path: Path) -> None:
@@ -256,8 +275,15 @@ def test_publish_replaces_only_the_results_block(settings: Settings, tmp_path: P
     )
     readme = tmp_path / "README.md"
     readme.write_text(f"# Title\n\nIntro.\n\n{START}\nold\n{END}\n\nAfter.\n", encoding="utf-8")
-    publish(readme, answers, retrieval, eval_dir=EVAL_DIR)
+    compare = run_answers(
+        settings,
+        AnswerRunOptions("dev", "keyword", limit=3),
+        MockGenerator(script=cite_top),
+        results_dir=tmp_path / "compare",
+    )
+    publish(readme, answers, retrieval, eval_dir=EVAL_DIR, compare_runs=(compare,))
     text = readme.read_text(encoding="utf-8")
     assert text.startswith("# Title") and text.endswith("After.\n")
     assert "old" not in text and "| supported | 3 |" in text
+    assert "Answerable questions declined" in text
     assert (tmp_path / "docs" / "results" / "answers.md").exists()

@@ -16,6 +16,8 @@ click==8.5.0
     # via uvicorn
 colorama==0.4.6 ; sys_platform == 'win32'
     # via pytest
+et-xmlfile==2.0.0
+    # via openpyxl
 fastapi==0.162.0
     # via ops-assistant (pyproject.toml)
 h11==0.16.0
@@ -45,6 +47,8 @@ jiter==0.18.0
 numpy==2.5.4
     # via ops-assistant (pyproject.toml)
 openai==3.40.0
+    # via ops-assistant (pyproject.toml)
+openpyxl==3.1.5
     # via ops-assistant (pyproject.toml)
 opentelemetry-api==1.45.1
     # via fastapi

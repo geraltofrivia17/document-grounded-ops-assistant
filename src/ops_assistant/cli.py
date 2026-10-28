@@ -136,7 +136,15 @@ def cmd_eval_answers(settings: Settings, args: argparse.Namespace) -> int:
     run_dir = run_answers(settings, options)
     summary = write_answer_report(run_dir)
     print(f"Results: {summary}")
-    print(f"Review sheet: {run_dir / 'review.csv'}")
+    print(f"Review sheet: {run_dir / 'review.xlsx'}")
+    return 0
+
+
+def cmd_eval_review_sheet(_: Settings, args: argparse.Namespace) -> int:
+    from ops_assistant.evaluation.report import write_review_sheet
+
+    sheet = write_review_sheet(Path(args.run_dir), overwrite=args.overwrite)
+    print(f"Review sheet: {sheet}")
     return 0
 
 
@@ -156,7 +164,9 @@ def cmd_eval_publish(settings: Settings, args: argparse.Namespace) -> int:
     from ops_assistant.evaluation.publish import publish
 
     review = Path(args.review) if args.review else None
-    publish(settings.root / "README.md", Path(args.answers), Path(args.retrieval), review)
+    compare = tuple(Path(run) for run in args.compare or ())
+    readme = settings.root / "README.md"
+    publish(readme, Path(args.answers), Path(args.retrieval), review, compare_runs=compare)
     print("Updated README.md results and docs/results/")
     return 0
 
@@ -209,13 +219,21 @@ def build_parser() -> argparse.ArgumentParser:
 
     report = eval_commands.add_parser("report", help="rebuild a run's summary.md")
     report.add_argument("run_dir")
-    report.add_argument("--review", help="completed review.csv to include")
+    report.add_argument("--review", help="completed review.xlsx (or .csv) to include")
     report.set_defaults(run=cmd_eval_report)
+
+    sheet = eval_commands.add_parser("review-sheet", help="create review.xlsx for an answer run")
+    sheet.add_argument("run_dir")
+    sheet.add_argument("--overwrite", action="store_true", help="replace an existing sheet")
+    sheet.set_defaults(run=cmd_eval_review_sheet)
 
     publish = eval_commands.add_parser("publish", help="write headline results into README.md")
     publish.add_argument("--answers", required=True, help="frozen answer run folder")
     publish.add_argument("--retrieval", required=True, help="frozen retrieval run folder")
-    publish.add_argument("--review", help="completed review.csv for the answer run")
+    publish.add_argument("--review", help="completed review.xlsx (or .csv) for the answer run")
+    publish.add_argument(
+        "--compare", action="append", help="answer run with another retrieval mode (repeatable)"
+    )
     publish.set_defaults(run=cmd_eval_publish)
     return parser
 
