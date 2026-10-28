@@ -62,3 +62,5 @@ Errors use the body and categories described in [architecture.md](architecture.m
 | `injection.json` | An instruction in the question that the assistant should not follow |
 | `invalid_input.json` | A blank question rejected with 422 |
 | `timeout.json` | A provider timeout (server started with `OPS_TIMEOUT_SECONDS=0.001`) |
+
+Recorded on 28 October 2026 with `gpt-6-luna` and embedding retrieval.

@@ -7,7 +7,38 @@ The handbook belongs to Fernhollow Distribution, a fictional company invented fo
 ## Results
 
 <!-- results:start -->
-Results appear here after the frozen evaluation has been run (`python -m ops_assistant eval publish`).
+
+Frozen evaluation set: 60 questions, run on 28 October 2026 with `gpt-6-luna` and embedding retrieval (answers reviewed by hand; case file `73d9b0f6b1f1`, commit `61317ad`). Full tables: [answers](docs/results/answers.md), [retrieval](docs/results/retrieval.md).
+
+| Category | Questions | Passed automatic check | Correct (human review) | Supported by its citations (human review) |
+|---|---|---|---|---|
+| supported | 30 | 30/30 (100%) | 29/30 (97%) | 30/30 (100%) |
+| unsupported | 10 | 10/10 (100%) | 10/10 (100%) | 1/1 (100%) |
+| multi document | 10 | 10/10 (100%) | 10/10 (100%) | 9/10 (90%) |
+| adversarial | 10 | 10/10 (100%) | 10/10 (100%) | 9/9 (100%) |
+
+Support is judged only for answers that cite passages; a refusal that cites nothing is not counted. Marked partly or no on review: F029 (correct: partly); F043 (supported: partly). The reviewer's note on every case is in [docs/results/review_marks.csv](docs/results/review_marks.csv).
+
+Retrieval on the 49 answerable frozen questions (top 5, section-160-40 chunks):
+
+| Mode | Hit@1 | Hit@5 | Recall@5 | MRR |
+|---|---|---|---|---|
+| keyword | 33/49 (67%) | 41/49 (84%) | 0.82 | 0.75 |
+| embedding | 42/49 (86%) | 49/49 (100%) | 0.98 | 0.93 |
+| hybrid | 39/49 (80%) | 47/49 (96%) | 0.95 | 0.86 |
+
+Embedding and hybrid retrieval add one embedding call per question: median 163.1 ms, 95th percentile 328.4 ms (49 calls).
+
+The same 60 questions answered with each retrieval mode (decided before the run: embedding is the reported configuration, the others are comparisons):
+
+| Retrieval | Passed automatic check | Answerable questions declined | Median response ms | Cost per 1,000 questions |
+|---|---|---|---|---|
+| embedding | 60/60 (100%) | 0 of 49 | 2453 | $0.15 |
+| keyword | 50/60 (83%) | 8 of 49 | 1831 | $0.14 |
+| hybrid | 56/60 (93%) | 2 of 49 | 1868 | $0.14 |
+
+Response time (embedding): median 2453 ms, 95th percentile 4476 ms. Costs are estimates from token counts at prices checked on 2026-10-28.
+
 <!-- results:end -->
 
 ## What it does
@@ -65,6 +96,8 @@ python -m ops_assistant index       # embed the chunks once (cached in data/inde
 python -m ops_assistant ask "What mileage rate can I claim for my own car?"
 python -m ops_assistant serve
 ```
+
+Responses recorded from the running service are in [docs/examples](docs/examples): a cited answer, a question the handbook doesn't cover, two documents that disagree, an injected instruction, a rejected question and a handled timeout.
 
 **With Docker:**
 

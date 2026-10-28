@@ -2,8 +2,9 @@
 
 ## Before the demo
 
+From the repository folder:
+
 ```powershell
-cd "E:\Project 3\document-grounded-ops-assistant"
 Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass
 .\.venv\Scripts\Activate.ps1
 python -m ops_assistant index

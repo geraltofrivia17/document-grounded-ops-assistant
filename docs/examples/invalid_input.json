@@ -1,0 +1,14 @@
+{
+  "request": {
+    "question": "   "
+  },
+  "status": 422,
+  "response": {
+    "error": {
+      "category": "invalid_question",
+      "message": "The question must be at least 3 characters",
+      "stage": "request",
+      "request_id": "2d19157a97064ddf"
+    }
+  }
+}

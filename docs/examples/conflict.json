@@ -1,0 +1,81 @@
+{
+  "request": {
+    "question": "How often will my laptop be replaced if I work hybrid?"
+  },
+  "status": 200,
+  "response": {
+    "request_id": "ded8417b52414497",
+    "outcome": "conflicting_evidence",
+    "answer": "The hybrid-working policy says your laptop is replaced every 3 years; the IT equipment policy says laptops are replaced every 4 years.",
+    "conflict_note": "HR-203 specifies every 3 years for hybrid workers, while OPS-105 says laptops are replaced every 4 years. The sources do not explain how to resolve the difference.",
+    "citations": [
+      {
+        "id": "HR-203:v1.3:s6:c1",
+        "document": "HR-203",
+        "version": "1.3",
+        "title": "Remote and Hybrid Working",
+        "section": "6. Home office equipment",
+        "origin": "internal",
+        "text": "The company provides a laptop, a monitor and a headset for hybrid workers. Laptops for hybrid workers are replaced every 3 years. If you leave Fernhollow, return all company equipment, including your laptop, within 10 working days of your last working day."
+      },
+      {
+        "id": "OPS-105:v1.1:s6:c1",
+        "document": "OPS-105",
+        "version": "1.1",
+        "title": "IT Equipment Issue and Return",
+        "section": "6. Replacement cycle",
+        "origin": "internal",
+        "text": "Laptops are replaced every 4 years and phones every 3 years, or earlier if they fail."
+      }
+    ],
+    "retrieved": [
+      {
+        "id": "HR-203:v1.3:s6:c1",
+        "rank": 1,
+        "score": 0.644343
+      },
+      {
+        "id": "OPS-105:v1.1:s6:c1",
+        "rank": 2,
+        "score": 0.606045
+      },
+      {
+        "id": "HR-203:v1.3:s2:c1",
+        "rank": 3,
+        "score": 0.515032
+      },
+      {
+        "id": "HR-203:v1.3:s5:c1",
+        "rank": 4,
+        "score": 0.503941
+      },
+      {
+        "id": "HR-203:v1.3:s3:c1",
+        "rank": 5,
+        "score": 0.460969
+      }
+    ],
+    "removed_citations": [],
+    "generation_skipped": false,
+    "model": "gpt-6-luna",
+    "retrieval_mode": "embedding",
+    "usage": {
+      "input_tokens": 873,
+      "cached_input_tokens": 0,
+      "output_tokens": 171,
+      "reasoning_tokens": 54,
+      "embedding_tokens": 12,
+      "estimated_cost_usd": 0.00017304
+    },
+    "timings": {
+      "retrieval_ms": 209.1,
+      "generation_ms": 3180.6,
+      "total_ms": 3389.7
+    },
+    "provider": {
+      "request_id": "req_53a29996263243428d24a9b0641615b6",
+      "retries": 0
+    },
+    "warnings": []
+  }
+}

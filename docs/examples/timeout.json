@@ -1,0 +1,14 @@
+{
+  "request": {
+    "question": "What mileage rate can I claim for using my own car on business?"
+  },
+  "status": 504,
+  "response": {
+    "error": {
+      "category": "provider_timeout",
+      "message": "The model provider did not respond in time",
+      "stage": "generation",
+      "request_id": "179f7009da61472f"
+    }
+  }
+}

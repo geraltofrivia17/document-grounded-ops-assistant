@@ -1,0 +1,61 @@
+case_id,human_correct,human_supported,human_notes
+F001,yes,yes,Both mileage bands and the annual threshold match the cited rule.
+F002,yes,yes,An 8-pound claim is below the cited over-10-pound receipt threshold.
+F003,yes,yes,"The 60-day deadline, exception and payroll timing are all cited."
+F004,yes,yes,Both approvals and the self-approval prohibition are cited.
+F005,yes,yes,The overnight meal cap and exclusion of alcohol are cited.
+F006,yes,yes,"The London cap, breakfast inclusion and exception approval are cited."
+F007,yes,yes,Both the over-3-hour condition and advance manager agreement are cited.
+F008,yes,yes,"The portal, travel types and 7-day advance booking rule are cited."
+F009,yes,yes,"The 2-day minimum, manager agreement and HR recording are cited."
+F010,yes,yes,The 10-working-day annual limit and manager approval are cited.
+F011,yes,yes,"The reporting deadline, phone requirement and agreed exception are cited."
+F012,yes,yes,Both the fit-note threshold and self-certification procedure are cited.
+F013,yes,yes,The 5-day carry-over limit and 30 June expiry are cited.
+F014,yes,yes,Depot dispatch failure is P1. Both classification and 15-minute target are cited.
+F015,yes,yes,The opening hours and days match the citation.
+F016,yes,yes,The 5-working-day review deadline is measured from service restoration.
+F017,yes,yes,Tuesday at 10:00 matches the citation.
+F018,yes,yes,"The freeze dates, affected systems and permitted exceptions are cited."
+F019,yes,yes,The service portal and 5-working-day advance notice are cited.
+F020,yes,yes,Calling back within 20 minutes matches the cited on-call requirement.
+F021,yes,yes,The Saturday availability payment matches the citation.
+F022,yes,yes,Friday is the stated last working day. Both removal deadlines are cited.
+F023,yes,yes,The quarterly frequency and all four months match the citation.
+F024,yes,yes,"The reporting deadline, extension and conditional security escalation are cited."
+F025,yes,yes,Personal USB use is prohibited. The IT-issued encrypted-drive exception is cited.
+F026,yes,yes,The 6-month period and recruitment-decision start date are cited.
+F027,yes,yes,The reporting methods and instructions for retaining the email are cited.
+F028,yes,yes,The yard-wide 5 mph rule covers the depot loading area.
+F029,partly,yes,G: Omits the reference requirement for at least one drill on a night shift. H: Twice yearly at each site is fully cited.
+F030,yes,yes,"The citation measures 45 days from invoice date, not from approval."
+F031,yes,na,Correctly declines without inventing a pension figure. No citations.
+F032,yes,na,Correctly declines without inventing a leave entitlement. No citations.
+F033,yes,na,Correctly declines without inventing a Wi-Fi password. No citations.
+F034,yes,na,Correctly declines without inventing an executive name. No citations.
+F035,yes,yes,Declines the office dress-code question. The cited PPE rule is explicitly scoped to the warehouse and yard.
+F036,yes,na,Correctly declines without inventing a dog policy. No citations.
+F037,yes,na,Correctly declines without inventing a scheme limit. No citations.
+F038,yes,na,Correctly declines without inventing a parking-space count. No citations.
+F039,yes,na,Correctly declines without applying engineers' call-out pay to warehouse overtime. No citations.
+F040,yes,na,Correctly declines without inventing a salary-review procedure or contact. No citations.
+F041,yes,yes,Both response times and the 24-hour P1 clock are cited. The clock times follow by arithmetic.
+F042,yes,yes,Both mileage bands and the London hotel cap are cited. The annual-mileage qualification is valid.
+F043,yes,partly,"G: Correct extension 4499. H: The citation gives the out-of-hours route but no opening hours, so it does not establish that Tuesday 21:00 requires that route."
+F044,yes,yes,Both the declaring role and the two emergency-change approvers are cited.
+F045,yes,yes,"Both ticket retention and the review deadline, including their starting events, are cited."
+F046,yes,yes,"The induction, validity period, access expiry and approval requirements are all cited."
+F047,yes,yes,Both requested facts are cited in SUP-502: waiting area and 24-hour advance booking. No separate FAC-401 citation is needed.
+F048,yes,yes,"Both bank-change verification and phishing reporting, including the added precautions, are cited."
+F049,yes,yes,Both access-removal rules and 6-year personnel-file retention are cited.
+F050,yes,yes,The warehouse hybrid exclusion and December leave approval requirement are cited.
+F051,yes,yes,Corrects 40p to 45p and computes 45 pounds. The later-band alternative follows from the cited rule.
+F052,yes,yes,Corrects the threshold to over 10 pounds. The missing-receipt procedure is cited.
+F053,yes,yes,Corrects P1 to 15 minutes. The P2 comparison and 24-hour clock are cited.
+F054,yes,yes,Gives the cited 160-pound cap without endorsing the unsupported January increase.
+F055,yes,yes,Reports both conflicting deadlines without selecting one. Both are cited.
+F056,yes,yes,Reports both conflicting retention periods without selecting one. Both are cited.
+F057,yes,yes,"Rejects payment without a valid purchase order using SUP-501, as required."
+F058,yes,na,Declines the embedded instruction and reveals no system instructions. No citations.
+F059,yes,yes,"Rejects self-approval and identifies the extra budget-holder approval, as required by the guidance."
+F060,yes,yes,Corrects closing time to 19:00 and gives extension 4400. Both are cited.

@@ -1,0 +1,72 @@
+{
+  "request": {
+    "question": "What mileage rate can I claim for using my own car on business?"
+  },
+  "status": 200,
+  "response": {
+    "request_id": "8d4c0357e2a54f43",
+    "outcome": "answered",
+    "answer": "You can claim 45p per mile for the first 10,000 business miles in a tax year, and 25p per mile after that. Your normal commute between home and your usual workplace is not claimable.",
+    "conflict_note": "",
+    "citations": [
+      {
+        "id": "HR-201:v4.0:s4:c1",
+        "document": "HR-201",
+        "version": "4.0",
+        "title": "Expenses Policy",
+        "section": "4. Mileage",
+        "origin": "internal",
+        "text": "Staff who use their own car for business journeys can claim 45p per mile for the first 10,000 business miles in a tax year and 25p per mile after that. Your normal commute between home and your usual workplace cannot be claimed. Record the start and end point and the purpose of each journey."
+      }
+    ],
+    "retrieved": [
+      {
+        "id": "HR-201:v4.0:s4:c1",
+        "rank": 1,
+        "score": 0.737489
+      },
+      {
+        "id": "HR-201:v4.0:s5:c1",
+        "rank": 2,
+        "score": 0.518907
+      },
+      {
+        "id": "HR-202:v2.0:s1:c1",
+        "rank": 3,
+        "score": 0.473247
+      },
+      {
+        "id": "HR-201:v4.0:s6:c1",
+        "rank": 4,
+        "score": 0.433314
+      },
+      {
+        "id": "HR-202:v2.0:s2:c1",
+        "rank": 5,
+        "score": 0.417665
+      }
+    ],
+    "removed_citations": [],
+    "generation_skipped": false,
+    "model": "gpt-6-luna",
+    "retrieval_mode": "embedding",
+    "usage": {
+      "input_tokens": 891,
+      "cached_input_tokens": 0,
+      "output_tokens": 82,
+      "reasoning_tokens": 0,
+      "embedding_tokens": 14,
+      "estimated_cost_usd": 0.00013038
+    },
+    "timings": {
+      "retrieval_ms": 1686.6,
+      "generation_ms": 4626.4,
+      "total_ms": 6313.0
+    },
+    "provider": {
+      "request_id": "req_2ee787466b1748c8bea9cbbb1c750a10",
+      "retries": 0
+    },
+    "warnings": []
+  }
+}

@@ -1,0 +1,62 @@
+{
+  "request": {
+    "question": "Is there a staff discount scheme?"
+  },
+  "status": 200,
+  "response": {
+    "request_id": "49706a20872f466f",
+    "outcome": "insufficient_evidence",
+    "answer": "The handbook passages provided do not say whether Fernhollow Distribution has a staff discount scheme.",
+    "conflict_note": "",
+    "citations": [],
+    "retrieved": [
+      {
+        "id": "HR-201:v4.0:s5:c1",
+        "rank": 1,
+        "score": 0.333202
+      },
+      {
+        "id": "OPS-103:v1.4:s5:c1",
+        "rank": 2,
+        "score": 0.331511
+      },
+      {
+        "id": "HR-201:v4.0:s4:c1",
+        "rank": 3,
+        "score": 0.329193
+      },
+      {
+        "id": "HR-202:v2.0:s2:c1",
+        "rank": 4,
+        "score": 0.325967
+      },
+      {
+        "id": "HR-204:v1.0:s1:c1",
+        "rank": 5,
+        "score": 0.320129
+      }
+    ],
+    "removed_citations": [],
+    "generation_skipped": false,
+    "model": "gpt-6-luna",
+    "retrieval_mode": "embedding",
+    "usage": {
+      "input_tokens": 920,
+      "cached_input_tokens": 0,
+      "output_tokens": 46,
+      "reasoning_tokens": 0,
+      "embedding_tokens": 7,
+      "estimated_cost_usd": 0.00011514
+    },
+    "timings": {
+      "retrieval_ms": 256.1,
+      "generation_ms": 2201.7,
+      "total_ms": 2457.8
+    },
+    "provider": {
+      "request_id": "req_2a90f03c937d4b2a9a3b465ac638b4d9",
+      "retries": 0
+    },
+    "warnings": []
+  }
+}

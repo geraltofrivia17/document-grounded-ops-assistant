@@ -1,0 +1,46 @@
+{
+  "kind": "retrieval",
+  "created_utc": "20261028T125110Z",
+  "case_set": "frozen",
+  "cases_file": "eval/frozen_cases.jsonl",
+  "cases_file_sha256": "73d9b0f6b1f1a7a7b34d0d17bed9b61a1feee35ebaa3d2779316ad9989b6ed09",
+  "cases_scored": 49,
+  "modes": [
+    "keyword",
+    "embedding",
+    "hybrid"
+  ],
+  "chunkings": [
+    "section-160-40",
+    "section-40-10",
+    "window-80-20",
+    "window-160-40",
+    "window-320-60"
+  ],
+  "k": 5,
+  "keyword_stemming": true,
+  "hybrid_candidates": 20,
+  "rrf_k": 60,
+  "embedding_model": "text-embedding-3-small",
+  "query_embedding_calls": {
+    "calls": 49,
+    "median_ms": 163.1,
+    "p95_ms": 328.4,
+    "max_ms": 1242.2,
+    "retries": 0,
+    "tokens": 866
+  },
+  "corpus_as_of": "2026-10-01",
+  "corpus_fingerprint": "1b62a68bc1b2a3df",
+  "git": {
+    "commit": "61317ad0104a8bcaa5b03c0a31f9592f44a420c0",
+    "uncommitted_changes": false
+  },
+  "versions": {
+    "python": "3.13.16",
+    "ops-assistant": "0.1.0",
+    "openai": "3.40.0",
+    "numpy": "2.5.4"
+  },
+  "platform": "Windows-11-10.0.26220-SP0"
+}

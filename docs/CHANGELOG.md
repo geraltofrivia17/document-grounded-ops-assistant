@@ -9,3 +9,5 @@
 - FastAPI service with request ids, JSON logging and a demo page.
 - Development (24) and frozen (60) evaluation sets, retrieval experiment, answer evaluation, human review sheet and README publishing.
 - Tests with mocked providers, GitHub Actions CI and a Dockerfile.
+- Frozen evaluation results, with the human review, published in the README and `docs/results`.
+- API examples recorded from the running service in `docs/examples`.
